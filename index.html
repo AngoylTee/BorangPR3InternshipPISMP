@@ -858,7 +858,7 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function editEvaluation(id) {
-            const evaluation = evaluations.find(e => e.id === id);
+            const evaluation = evaluations.find(e => e.id == id); // use == not === to allow type coercion
             if (evaluation) {
                 document.getElementById('dashboardScreen').classList.add('hidden');
                 document.getElementById('evaluationFormScreen').classList.remove('hidden');
@@ -912,9 +912,9 @@ table.evaluations-table td, table.evaluations-table th {
         
         function printEvaluation(id) {
             editEvaluation(id);
-            setTimeout(() => {
-                window.print();
-            }, 500);
+              setTimeout(() => {
+            window.print();
+        }, 1000); // instead of 500
         }
         
         function saveEvaluation() {
