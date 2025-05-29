@@ -796,25 +796,26 @@ table.evaluations-table td, table.evaluations-table th {
             loadEvaluations();
         });
         
-        function loadEvaluations() {
-            const evaluationsList = document.getElementById('evaluationsList');
-            evaluationsList.innerHTML = '';
-            
-            evaluations.forEach(eval => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${eval.studentName}</td>
-                    <td>${eval.icNumber}</td>
-                    <td>${eval.evaluationDate}</td>
-                    <td>${eval.totalMark}%</td>
-                    <td>
-                        <button onclick="editEvaluation(${eval.id})" class="btn">Edit</button>
-                        <button onclick="printEvaluation(${eval.id})" class="btn">Print</button>
-                    </td>
-                `;
-                evaluationsList.appendChild(row);
-            });
-        }
+       function loadEvaluations() {
+    const evaluationsList = document.getElementById('evaluationsList');
+    evaluationsList.innerHTML = '';
+    
+    evaluations.forEach(eval => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${eval.studentName}</td>
+            <td>${eval.icNumber}</td>
+            <td>${eval.evaluationDate}</td>
+            <td>${eval.totalMark}%</td>
+            <td>
+                <!-- 这里添加了单引号 ' -->
+                <button onclick="editEvaluation('${eval.id}')" class="btn">Edit</button>
+                <button onclick="printEvaluation('${eval.id}')" class="btn">Print</button>
+            </td>
+        `;
+        evaluationsList.appendChild(row);
+    });
+}
         
         function resetForm() {
             document.getElementById('evaluationId').value = '';
@@ -858,7 +859,8 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function editEvaluation(id) {
-            const evaluation = evaluations.find(e => e.id == id); // use == not === to allow type coercion
+    const evaluation = evaluations.find(e => String(e.id) === String(id));
+        if (evaluation) {
             if (evaluation) {
                 document.getElementById('dashboardScreen').classList.add('hidden');
                 document.getElementById('evaluationFormScreen').classList.remove('hidden');
