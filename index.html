@@ -859,9 +859,11 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function editEvaluation(id) {
-    const evaluation = evaluations.find(e => String(e.id) === String(id));
-        if (evaluation) {
-            if (evaluation) {
+     const evaluation = evaluations.find(e => String(e.id) === String(id));
+    if (evaluation) {
+        document.getElementById('dashboardScreen').classList.add('hidden');
+        document.getElementById('evaluationFormScreen').classList.remove('hidden');
+                    if (evaluation) {
                 document.getElementById('dashboardScreen').classList.add('hidden');
                 document.getElementById('evaluationFormScreen').classList.remove('hidden');
                 
@@ -913,11 +915,10 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function printEvaluation(id) {
-            editEvaluation(id);
-              setTimeout(() => {
-            window.print();
-        }, 1000); // instead of 500
-        }
+           editEvaluation(id);
+    setTimeout(() => {
+        window.print();
+    }, 500);
         
         function saveEvaluation() {
             const canvas = document.getElementById('signatureCanvas');
