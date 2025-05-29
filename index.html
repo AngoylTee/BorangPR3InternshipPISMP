@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>PR3 Internship Evaluation System</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR3 Internship Evaluation System</title>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -194,375 +193,330 @@
         .close:hover {
             color: black;
         }
-    
-/* Enhanced IPG Kampus dropdown styling */
-.ipg-campus-select {
-    padding: 10px 15px;
-    font-size: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.ipg-campus-select:focus {
-    border-color: #3498db;
-    background-color: #ffffff;
-    box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
-    outline: none;
-}
-
-/* Enhanced login container */
-.login-container {
-    border-radius: 12px;
-    background: linear-gradient(to bottom right, #ffffff, #e6f2ff);
-    padding: 30px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-/* Stylish header text */
-.header h2, .header h4 {
-    color: #2c3e50;
-}
-
-/* Buttons with hover */
-.btn {
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-    background-color: #005bb5;
-    transform: scale(1.02);
-}
-
-.btn-secondary:hover {
-    background-color: #444;
-}
-
-/* Form sections as cards */
-.form-section {
-    background: #fcfcfc;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-    border: 1px solid #eee;
-}
-
-/* Markah inputs */
-input[type="number"] {
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 14px;
-}
-
-/* Stylish tables */
-table.evaluations-table {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-table.evaluations-table th {
-    background-color: #3498db;
-    color: white;
-}
-
-table.evaluations-table td, table.evaluations-table th {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-</style>
+    </style>
 </head>
 <body>
-<!-- Login Screen -->
-<div class="login-container" id="loginScreen">
-<div class="header">
-<h2>PR3 Internship Evaluation System</h2>
-<h4>UNIT AMALAN PROFESIONAL IPGMKTHO</h4>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="header">
+            <h2>PR3 Internship Evaluation System</h2>
+            <h4>UNIT AMALAN PROFESIONAL IPGMKTHO</h4>
+        </div>
+        
+        <div id="loginError" class="alert alert-error hidden">Invalid username or password</div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+            <h5>@copyright TEEYONGLAI IPGMKTHO 2025</h5>
+        </form>
+    </div>
+
+    <!-- Main Application -->
+    <div id="appContainer" class="container hidden">
+        <!-- Navigation -->
+        <div class="no-print">
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            <button id="viewRecordsBtn" class="btn">View Records</button>
+            <button id="newEvaluationBtn" class="btn">New Evaluation</button>
+            <button id="downloadDataBtn" class="btn">Download All Data</button>
+        </div>
+        
+        <!-- Dashboard Screen -->
+        <div id="dashboardScreen">
+            <h2>Welcome, <span id="userName">Pensyarah Penilai</span></h2>
+            <p>IPGM Kampus: <span id="userCampus">Tun Hussein Onn</span></p>
+            
+            <h3>Recent Evaluations</h3>
+            <table class="evaluations-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>IC Number</th>
+                        <th>Date</th>
+                        <th>Total Mark</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="evaluationsList">
+                    <!-- Evaluations will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Evaluation Form -->
+        <div id="evaluationFormScreen" class="hidden">
+            <div class="header">
+                <h1>LAMPIRAN 3</h1>
+                <h2>PR3 BORANG PENILAIAN INTERNSHIP</h2>
+                <h3>INSTITUT PENDIDIKAN GURU</h3>
+                <h3>KEMENTERIAN PENDIDIKAN MALAYSIA</h3>
+            </div>
+
+            <div class="confidential">SULIT - Dokumen ini adalah untuk kegunaan rasmi sahaja</div>
+
+            <form id="evaluationForm">
+                <input type="hidden" id="evaluationId">
+                
+                <!-- Student Information -->
+                <div class="form-section">
+                    <h3>MAKLUMAT PELAJAR</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+    <label>IPG Kampus:</label>
+    <select id="ipgCampus" required>
+        <option value="">-- Sila Pilih IPG Kampus --</option>
+        <option value="IPGM Kampus Tun Hussein Onn">IPGM Kampus Tun Hussein Onn</option>
+        <option value="IPGM Kampus Pendidikan Islam">IPGM Kampus Pendidikan Islam</option>
+        <option value="IPGM Kampus Ilmu Khas">IPGM Kampus Ilmu Khas</option>
+        <option value="IPGM Kampus Bahasa Melayu">IPGM Kampus Bahasa Melayu</option>
+        <option value="IPGM Kampus Pendidikan Teknik">IPGM Kampus Pendidikan Teknik</option>
+        <option value="IPGM Kampus Bahasa Antarabangsa">IPGM Kampus Bahasa Antarabangsa</option>
+        <option value="IPGM Kampus Darulaman">IPGM Kampus Darulaman</option>
+        <option value="IPGM Kampus Ipoh">IPGM Kampus Ipoh</option>
+        <option value="IPGM Kampus Perempuan Melayu Melaka">IPGM Kampus Perempuan Melayu Melaka</option>
+        <option value="IPGM Kampus Pulau Pinang">IPGM Kampus Pulau Pinang</option>
+        <option value="IPGM Kampus Sultan Abdul Halim">IPGM Kampus Sultan Abdul Halim</option>
+        <option value="IPGM Kampus Sultan Mizan">IPGM Kampus Sultan Mizan</option>
+        <option value="IPGM Kampus Tuanku Bainun">IPGM Kampus Tuanku Bainun</option>
+        <option value="IPGM Kampus Tun Abdul Razak">IPGM Kampus Tun Abdul Razak</option>
+        <option value="IPGM Kampus Tawau">IPGM Kampus Tawau</option>
+        <option value="IPGM Kampus Gaya">IPGM Kampus Gaya</option>
+        <option value="IPGM Kampus Kent">IPGM Kampus Kent</option>
+        <option value="IPGM Kampus Sarawak">IPGM Kampus Sarawak</option>
+        <option value="IPGM Kampus Temenggong Ibrahim">IPGM Kampus Temenggong Ibrahim</option>
+        <option value="IPGM Kampus Dato’ Razali Ismail">IPGM Kampus Dato’ Razali Ismail</option>
+    </select>
 </div>
-<div class="alert alert-error hidden" id="loginError">Invalid username or password</div>
-<form id="loginForm">
-<div class="form-group">
-<label for="loginUsername">Username:</label>
-<input id="loginUsername" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="loginPassword">Password:</label>
-<input id="loginPassword" required="" type="password"/>
-</div>
-<button class="btn" type="submit">Login</button>
-<h5>@copyright TEEYONGLAI IPGMKTHO 2025</h5>
-</form>
-</div>
-<!-- Main Application -->
-<div class="container hidden" id="appContainer">
-<!-- Navigation -->
-<div class="no-print">
-<button class="btn btn-secondary" id="logoutBtn">Logout</button>
-<button class="btn" id="viewRecordsBtn">View Records</button>
-<button class="btn" id="newEvaluationBtn">New Evaluation</button>
-<button class="btn" id="downloadDataBtn">Download All Data</button>
-</div>
-<!-- Dashboard Screen -->
-<div id="dashboardScreen">
-<h2>Welcome, <span id="userName">Pensyarah Penilai</span></h2>
-<p>IPGM Kampus: <span id="userCampus">Tun Hussein Onn</span></p>
-<h3>Recent Evaluations</h3>
-<table class="evaluations-table">
-<thead>
-<tr>
-<th>Student Name</th>
-<th>IC Number</th>
-<th>Date</th>
-<th>Total Mark</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody id="evaluationsList">
-<!-- Evaluations will be loaded here -->
-</tbody>
-</table>
-</div>
-<!-- Evaluation Form -->
-<div class="hidden" id="evaluationFormScreen">
-<div class="header">
-<h1>LAMPIRAN 3</h1>
-<h2>PR3 BORANG PENILAIAN INTERNSHIP</h2>
-<h3>INSTITUT PENDIDIKAN GURU</h3>
-<h3>KEMENTERIAN PENDIDIKAN MALAYSIA</h3>
-</div>
-<div class="confidential">SULIT - Dokumen ini adalah untuk kegunaan rasmi sahaja</div>
-<form id="evaluationForm">
-<input id="evaluationId" type="hidden"/>
-<!-- Student Information -->
-<div class="form-section">
-<h3>MAKLUMAT PELAJAR</h3>
-<div class="form-row">
-<div class="form-group">
-<label>IPG Kampus:</label>
-<select class="ipg-campus-select" id="ipgCampus" required="">
-<option value="">-- Sila Pilih IPG Kampus --</option>
-<option value="IPGM Kampus Tun Hussein Onn">IPGM Kampus Tun Hussein Onn</option>
-<option value="IPGM Kampus Pendidikan Islam">IPGM Kampus Pendidikan Islam</option>
-<option value="IPGM Kampus Ilmu Khas">IPGM Kampus Ilmu Khas</option>
-<option value="IPGM Kampus Bahasa Melayu">IPGM Kampus Bahasa Melayu</option>
-<option value="IPGM Kampus Pendidikan Teknik">IPGM Kampus Pendidikan Teknik</option>
-<option value="IPGM Kampus Bahasa Antarabangsa">IPGM Kampus Bahasa Antarabangsa</option>
-<option value="IPGM Kampus Darulaman">IPGM Kampus Darulaman</option>
-<option value="IPGM Kampus Ipoh">IPGM Kampus Ipoh</option>
-<option value="IPGM Kampus Perempuan Melayu Melaka">IPGM Kampus Perempuan Melayu Melaka</option>
-<option value="IPGM Kampus Pulau Pinang">IPGM Kampus Pulau Pinang</option>
-<option value="IPGM Kampus Sultan Abdul Halim">IPGM Kampus Sultan Abdul Halim</option>
-<option value="IPGM Kampus Sultan Mizan">IPGM Kampus Sultan Mizan</option>
-<option value="IPGM Kampus Tuanku Bainun">IPGM Kampus Tuanku Bainun</option>
-<option value="IPGM Kampus Tun Abdul Razak">IPGM Kampus Tun Abdul Razak</option>
-<option value="IPGM Kampus Tawau">IPGM Kampus Tawau</option>
-<option value="IPGM Kampus Gaya">IPGM Kampus Gaya</option>
-<option value="IPGM Kampus Kent">IPGM Kampus Kent</option>
-<option value="IPGM Kampus Sarawak">IPGM Kampus Sarawak</option>
-<option value="IPGM Kampus Temenggong Ibrahim">IPGM Kampus Temenggong Ibrahim</option>
-<option value="IPGM Kampus Dato’ Razali Ismail">IPGM Kampus Dato’ Razali Ismail</option>
-</select>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Nama Pelajar:</label>
-<input id="studentName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label>No.K/P:</label>
-<input id="icNumber" required="" type="text"/>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Program:</label>
-<select id="program" required="">
-<option value="PISMP">PISMP</option>
-<option value="Lain-lain">Lain-lain</option>
-</select>
-</div>
-<div class="form-group">
-<label>Ambilan:</label>
-<input id="intakeYear" required="" type="text"/>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Pengkhususan:</label>
-<input id="specialization" required="" type="text"/>
-</div>
-<div class="form-group">
-<label>Sekolah:</label>
-<input id="school" required="" type="text"/>
-</div>
-</div>
-</div>
-<!-- Section A: Project Planning -->
-<div class="form-section">
-<h3>A. PERANCANGAN PROJEK/AKTIVITI (15%) <span class="rubric-link" onclick="showRubric('A')">[Lihat Rubrik]</span></h3>
-<div class="tahap-selector">
-<label>Tahap:</label>
-<select id="aTahap" onchange="updateMarkAndComments('a', 15)" required="">
-<option value="">Pilih Tahap</option>
-<option value="1">1 - Terdapat banyak kelemahan</option>
-<option value="2">2 - Terdapat beberapa kelemahan</option>
-<option value="3">3 - Pencapaian sederhana</option>
-<option value="4">4 - Baik dalam banyak aspek</option>
-<option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
-</select>
-<div class="mark-range" id="aMarkRange">Markah: 0 - 15%</div>
-</div>
-<div class="form-group">
-<label>ULASAN:</label>
-<textarea id="aComments"></textarea>
-</div>
-<div class="form-group">
-<label>Markah ( /15 ):</label>
-<input id="aMark" max="15" min="0" onchange="updateTahapFromMark('a', 15)" step="0.1" type="number"/>
-</div>
-</div>
-<!-- Section B: Project Implementation -->
-<div class="form-section">
-<h3>B. PELAKSANAAN PROJEK/AKTIVITI (40%) <span class="rubric-link" onclick="showRubric('B')">[Lihat Rubrik]</span></h3>
-<div class="tahap-selector">
-<label>Tahap:</label>
-<select id="bTahap" onchange="updateMarkAndComments('b', 40)" required="">
-<option value="">Pilih Tahap</option>
-<option value="1">1 - Terdapat banyak kelemahan</option>
-<option value="2">2 - Terdapat beberapa kelemahan</option>
-<option value="3">3 - Pencapaian sederhana</option>
-<option value="4">4 - Baik dalam banyak aspek</option>
-<option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
-</select>
-<div class="mark-range" id="bMarkRange">Markah: 0 - 40%</div>
-</div>
-<div class="form-group">
-<label>ULASAN:</label>
-<textarea id="bComments"></textarea>
-</div>
-<div class="form-group">
-<label>Markah ( /40 ):</label>
-<input id="bMark" max="40" min="0" onchange="updateTahapFromMark('b', 40)" step="0.1" type="number"/>
-</div>
-</div>
-<!-- Section C: Project Report -->
-<div class="form-section">
-<h3>C. PENULISAN LAPORAN PROJEK/AKTIVITI (15%) <span class="rubric-link" onclick="showRubric('C')">[Lihat Rubrik]</span></h3>
-<div class="tahap-selector">
-<label>Tahap:</label>
-<select id="cTahap" onchange="updateMarkAndComments('c', 15)" required="">
-<option value="">Pilih Tahap</option>
-<option value="1">1 - Terdapat banyak kelemahan</option>
-<option value="2">2 - Terdapat beberapa kelemahan</option>
-<option value="3">3 - Pencapaian sederhana</option>
-<option value="4">4 - Baik dalam banyak aspek</option>
-<option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
-</select>
-<div class="mark-range" id="cMarkRange">Markah: 0 - 15%</div>
-</div>
-<div class="form-group">
-<label>ULASAN:</label>
-<textarea id="cComments"></textarea>
-</div>
-<div class="form-group">
-<label>Markah ( /15 ):</label>
-<input id="cMark" max="15" min="0" onchange="updateTahapFromMark('c', 15)" step="0.1" type="number"/>
-</div>
-</div>
-<!-- Section D: Reflection Notes -->
-<div class="form-section">
-<h3>D. CATATAN REFLEKSI (20%) <span class="rubric-link" onclick="showRubric('D')">[Lihat Rubrik]</span></h3>
-<div class="tahap-selector">
-<label>Tahap:</label>
-<select id="dTahap" onchange="updateMarkAndComments('d', 20)" required="">
-<option value="">Pilih Tahap</option>
-<option value="1">1 - Terdapat banyak kelemahan</option>
-<option value="2">2 - Terdapat beberapa kelemahan</option>
-<option value="3">3 - Pencapaian sederhana</option>
-<option value="4">4 - Baik dalam banyak aspek</option>
-<option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
-</select>
-<div class="mark-range" id="dMarkRange">Markah: 0 - 20%</div>
-</div>
-<div class="form-group">
-<label>ULASAN:</label>
-<textarea id="dComments"></textarea>
-</div>
-<div class="form-group">
-<label>Markah ( /20 ):</label>
-<input id="dMark" max="20" min="0" onchange="updateTahapFromMark('d', 20)" step="0.1" type="number"/>
-</div>
-</div>
-<!-- Section E: Portfolio Development -->
-<div class="form-section">
-<h3>E. PEMBINAAN PORTFOLIO (10%) <span class="rubric-link" onclick="showRubric('E')">[Lihat Rubrik]</span></h3>
-<div class="tahap-selector">
-<label>Tahap:</label>
-<select id="eTahap" onchange="updateMarkAndComments('e', 10)" required="">
-<option value="">Pilih Tahap</option>
-<option value="1">1 - Terdapat banyak kelemahan</option>
-<option value="2">2 - Terdapat beberapa kelemahan</option>
-<option value="3">3 - Pencapaian sederhana</option>
-<option value="4">4 - Baik dalam banyak aspek</option>
-<option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
-</select>
-<div class="mark-range" id="eMarkRange">Markah: 0 - 10%</div>
-</div>
-<div class="form-group">
-<label>ULASAN:</label>
-<textarea id="eComments"></textarea>
-</div>
-<div class="form-group">
-<label>Markah ( /10 ):</label>
-<input id="eMark" max="10" min="0" onchange="updateTahapFromMark('e', 10)" step="0.1" type="number"/>
-</div>
-</div>
-<!-- Total Marks -->
-<div class="form-section">
-<h3>JUMLAH KESELURUHAN MARKAH = (A + B + C + D + E) = <input id="totalMark" readonly="" type="text"/>%</h3>
-</div>
-<!-- Signature Section -->
-<div class="form-section">
-<h3>TANDATANGAN MENTOR/PENSYARAH PENILAI</h3>
-<div class="form-group">
-<label>Nama:</label>
-<input id="mentorName" required="" type="text"/>
-</div>
-<div class="form-group">
-<label>Tarikh:</label>
-<input id="evaluationDate" required="" type="date"/>
-</div>
-<div class="form-group">
-<label>Tandatangan:</label>
-<canvas height="200" id="signatureCanvas" width="400"></canvas>
-<button class="btn btn-secondary" id="clearSignature" type="button">Clear Signature</button>
-<input id="signatureData" type="hidden"/>
-</div>
-</div>
-<!-- Form Actions -->
-<div class="form-actions no-print">
-<button class="btn" type="submit">Save Evaluation</button>
-<button class="btn btn-secondary" id="printFormBtn" type="button">Print Form</button>
-<button class="btn btn-secondary" id="cancelFormBtn" type="button">Cancel</button>
-</div>
-</form>
-</div>
-</div>
-<!-- Rubric Modal -->
-<div class="modal" id="rubricModal">
-<div class="modal-content">
-<span class="close" onclick="closeModal()">×</span>
-<div id="rubricContent">
-<h2 id="rubricTitle">Rubrik Penilaian</h2>
-<div id="rubricDetails"></div>
-</div>
-</div>
-</div>
-<script>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Pelajar:</label>
+                            <input type="text" id="studentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>No.K/P:</label>
+                            <input type="text" id="icNumber" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Program:</label>
+                            <select id="program" required>
+                                <option value="PISMP">PISMP</option>
+                                <option value="Lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ambilan:</label>
+                            <input type="text" id="intakeYear" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pengkhususan:</label>
+                            <input type="text" id="specialization" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sekolah:</label>
+                            <input type="text" id="school" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section A: Project Planning -->
+                <div class="form-section">
+                    <h3>A. PERANCANGAN PROJEK/AKTIVITI (15%) <span class="rubric-link" onclick="showRubric('A')">[Lihat Rubrik]</span></h3>
+                    <div class="tahap-selector">
+                        <label>Tahap:</label>
+                        <select id="aTahap" required onchange="updateMarkAndComments('a', 15)">
+                            <option value="">Pilih Tahap</option>
+                            <option value="1">1 - Terdapat banyak kelemahan</option>
+                            <option value="2">2 - Terdapat beberapa kelemahan</option>
+                            <option value="3">3 - Pencapaian sederhana</option>
+                            <option value="4">4 - Baik dalam banyak aspek</option>
+                            <option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
+                        </select>
+                        <div class="mark-range" id="aMarkRange">Markah: 0 - 15%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ULASAN:</label>
+                        <textarea id="aComments"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Markah ( /15 ):</label>
+                        <input type="number" id="aMark" step="0.1" min="0" max="15" onchange="updateTahapFromMark('a', 15)">
+                    </div>
+                </div>
+
+                <!-- Section B: Project Implementation -->
+                <div class="form-section">
+                    <h3>B. PELAKSANAAN PROJEK/AKTIVITI (40%) <span class="rubric-link" onclick="showRubric('B')">[Lihat Rubrik]</span></h3>
+                    <div class="tahap-selector">
+                        <label>Tahap:</label>
+                        <select id="bTahap" required onchange="updateMarkAndComments('b', 40)">
+                            <option value="">Pilih Tahap</option>
+                            <option value="1">1 - Terdapat banyak kelemahan</option>
+                            <option value="2">2 - Terdapat beberapa kelemahan</option>
+                            <option value="3">3 - Pencapaian sederhana</option>
+                            <option value="4">4 - Baik dalam banyak aspek</option>
+                            <option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
+                        </select>
+                        <div class="mark-range" id="bMarkRange">Markah: 0 - 40%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ULASAN:</label>
+                        <textarea id="bComments"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Markah ( /40 ):</label>
+                        <input type="number" id="bMark" step="0.1" min="0" max="40" onchange="updateTahapFromMark('b', 40)">
+                    </div>
+                </div>
+
+                <!-- Section C: Project Report -->
+                <div class="form-section">
+                    <h3>C. PENULISAN LAPORAN PROJEK/AKTIVITI (15%) <span class="rubric-link" onclick="showRubric('C')">[Lihat Rubrik]</span></h3>
+                    <div class="tahap-selector">
+                        <label>Tahap:</label>
+                        <select id="cTahap" required onchange="updateMarkAndComments('c', 15)">
+                            <option value="">Pilih Tahap</option>
+                            <option value="1">1 - Terdapat banyak kelemahan</option>
+                            <option value="2">2 - Terdapat beberapa kelemahan</option>
+                            <option value="3">3 - Pencapaian sederhana</option>
+                            <option value="4">4 - Baik dalam banyak aspek</option>
+                            <option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
+                        </select>
+                        <div class="mark-range" id="cMarkRange">Markah: 0 - 15%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ULASAN:</label>
+                        <textarea id="cComments"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Markah ( /15 ):</label>
+                        <input type="number" id="cMark" step="0.1" min="0" max="15" onchange="updateTahapFromMark('c', 15)">
+                    </div>
+                </div>
+
+                <!-- Section D: Reflection Notes -->
+                <div class="form-section">
+                    <h3>D. CATATAN REFLEKSI (20%) <span class="rubric-link" onclick="showRubric('D')">[Lihat Rubrik]</span></h3>
+                    <div class="tahap-selector">
+                        <label>Tahap:</label>
+                        <select id="dTahap" required onchange="updateMarkAndComments('d', 20)">
+                            <option value="">Pilih Tahap</option>
+                            <option value="1">1 - Terdapat banyak kelemahan</option>
+                            <option value="2">2 - Terdapat beberapa kelemahan</option>
+                            <option value="3">3 - Pencapaian sederhana</option>
+                            <option value="4">4 - Baik dalam banyak aspek</option>
+                            <option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
+                        </select>
+                        <div class="mark-range" id="dMarkRange">Markah: 0 - 20%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ULASAN:</label>
+                        <textarea id="dComments"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Markah ( /20 ):</label>
+                        <input type="number" id="dMark" step="0.1" min="0" max="20" onchange="updateTahapFromMark('d', 20)">
+                    </div>
+                </div>
+
+                <!-- Section E: Portfolio Development -->
+                <div class="form-section">
+                    <h3>E. PEMBINAAN PORTFOLIO (10%) <span class="rubric-link" onclick="showRubric('E')">[Lihat Rubrik]</span></h3>
+                    <div class="tahap-selector">
+                        <label>Tahap:</label>
+                        <select id="eTahap" required onchange="updateMarkAndComments('e', 10)">
+                            <option value="">Pilih Tahap</option>
+                            <option value="1">1 - Terdapat banyak kelemahan</option>
+                            <option value="2">2 - Terdapat beberapa kelemahan</option>
+                            <option value="3">3 - Pencapaian sederhana</option>
+                            <option value="4">4 - Baik dalam banyak aspek</option>
+                            <option value="5">5 - Amat baik, cemerlang dalam banyak aspek</option>
+                        </select>
+                        <div class="mark-range" id="eMarkRange">Markah: 0 - 10%</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>ULASAN:</label>
+                        <textarea id="eComments"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Markah ( /10 ):</label>
+                        <input type="number" id="eMark" step="0.1" min="0" max="10" onchange="updateTahapFromMark('e', 10)">
+                    </div>
+                </div>
+
+                <!-- Total Marks -->
+                <div class="form-section">
+                    <h3>JUMLAH KESELURUHAN MARKAH = (A + B + C + D + E) = <input type="text" id="totalMark" readonly>%</h3>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="form-section">
+                    <h3>TANDATANGAN MENTOR/PENSYARAH PENILAI</h3>
+                    <div class="form-group">
+                        <label>Nama:</label>
+                        <input type="text" id="mentorName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tarikh:</label>
+                        <input type="date" id="evaluationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tandatangan:</label>
+                        <canvas id="signatureCanvas" width="400" height="200"></canvas>
+                        <button type="button" id="clearSignature" class="btn btn-secondary">Clear Signature</button>
+                        <input type="hidden" id="signatureData">
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions no-print">
+                    <button type="submit" class="btn">Save Evaluation</button>
+                    <button type="button" id="printFormBtn" class="btn btn-secondary">Print Form</button>
+                    <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rubric Modal -->
+    <div id="rubricModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="rubricContent">
+                <h2 id="rubricTitle">Rubrik Penilaian</h2>
+                <div id="rubricDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
         // Fixed login credentials
         const FIXED_USERNAME = "Internship";
         const FIXED_PASSWORD = "UAPishebat";
@@ -796,26 +750,25 @@ table.evaluations-table td, table.evaluations-table th {
             loadEvaluations();
         });
         
-       function loadEvaluations() {
-    const evaluationsList = document.getElementById('evaluationsList');
-    evaluationsList.innerHTML = '';
-    
-    evaluations.forEach(eval => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${eval.studentName}</td>
-            <td>${eval.icNumber}</td>
-            <td>${eval.evaluationDate}</td>
-            <td>${eval.totalMark}%</td>
-            <td>
-                <!-- 这里添加了单引号 ' -->
-                <button onclick="editEvaluation('${eval.id}')" class="btn">Edit</button>
-                <button onclick="printEvaluation('${eval.id}')" class="btn">Print</button>
-            </td>
-        `;
-        evaluationsList.appendChild(row);
-    });
-}
+        function loadEvaluations() {
+            const evaluationsList = document.getElementById('evaluationsList');
+            evaluationsList.innerHTML = '';
+            
+            evaluations.forEach(eval => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${eval.studentName}</td>
+                    <td>${eval.icNumber}</td>
+                    <td>${eval.evaluationDate}</td>
+                    <td>${eval.totalMark}%</td>
+                    <td>
+                        <button onclick="editEvaluation(${eval.id})" class="btn">Edit</button>
+                        <button onclick="printEvaluation(${eval.id})" class="btn">Print</button>
+                    </td>
+                `;
+                evaluationsList.appendChild(row);
+            });
+        }
         
         function resetForm() {
             document.getElementById('evaluationId').value = '';
@@ -859,11 +812,8 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function editEvaluation(id) {
-     const evaluation = evaluations.find(e => String(e.id) === String(id));
-    if (evaluation) {
-        document.getElementById('dashboardScreen').classList.add('hidden');
-        document.getElementById('evaluationFormScreen').classList.remove('hidden');
-                    if (evaluation) {
+            const evaluation = evaluations.find(e => e.id === id);
+            if (evaluation) {
                 document.getElementById('dashboardScreen').classList.add('hidden');
                 document.getElementById('evaluationFormScreen').classList.remove('hidden');
                 
@@ -915,10 +865,11 @@ table.evaluations-table td, table.evaluations-table th {
         }
         
         function printEvaluation(id) {
-           editEvaluation(id);
-    setTimeout(() => {
-        window.print();
-    }, 500);
+            editEvaluation(id);
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
         
         function saveEvaluation() {
             const canvas = document.getElementById('signatureCanvas');
